@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Марафон">
+    <meta name="theme-color" content="#570403">
+    <title>МАРАФОН — 30 Днів</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #570403;
+            --bg-dark: #3d0302;
+            --text-color: #FFF8EB;
+            --text-muted: rgba(255, 248, 235, 0.6);
+            --gold: #D4AF37;
+            --gold-light: rgba(212, 175, 55, 0.3);
+            --divider-color: rgba(212, 175, 55, 0.25);
+            --heart-empty: rgba(255, 248, 235, 0.35);
+            --heart-filled: #D4AF37;
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 2;
+            padding: 60px 80px;
+            padding-top: calc(60px + var(--safe-top));
+            padding-bottom: calc(60px + var(--safe-bottom));
+            min-height: 100vh;
+        }
+
+        /* Corner ornaments - desktop only */
+        .corner-ornament {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .corner-ornament.top-left {
+            top: 20px;
+            left: 20px;
+            border-top: 1px solid var(--gold);
+            border-left: 1px solid var(--gold);
+        }
+
+        .corner-ornament.top-right {
+            top: 20px;
+            right: 20px;
+            border-top: 1px solid var(--gold);
+            border-right: 1px solid var(--gold);
+        }
+
+        .corner-ornament.bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 1px solid var(--gold);
+            border-left: 1px solid var(--gold);
+        }
+
+        .corner-ornament.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 1px solid var(--gold);
+            border-right: 1px solid var(--gold);
+        }
+
+        .corner-ornament::before {
+            content: '✦';
+            position: absolute;
+            color: var(--gold);
+            font-size: 8px;
+        }
+
+        .corner-ornament.top-left::before { top: -4px; left: -4px; }
+        .corner-ornament.top-right::before { top: -4px; right: -4px; }
+        .corner-ornament.bottom-left::before { bottom: -4px; left: -4px; }
+        .corner-ornament.bottom-right::before { bottom: -4px; right: -4px; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--divider-color);
+            position: relative;
+        }
+
+        .header::after {
+            content: '❧';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-color);
+            padding: 0 20px;
+            color: var(--gold);
+            font-size: 14px;
+            opacity: 0.5;
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-style: italic;
+            font-size: 0.85rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display SC', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 4.5rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--text-color) 0%, var(--gold) 50%, var(--text-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .date-display {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-style: italic;
+            font-size: 0.95rem;
+            opacity: 0.6;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+
+        .header-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .est {
+            font-family: 'Playfair Display SC', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            opacity: 0.7;
+        }
+
+        .crest {
+            font-size: 1.8rem;
+            opacity: 0.3;
+            color: var(--gold);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .section {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            padding: 15px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+
+        .section-header {
+            font-family: 'Playfair Display SC', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 1rem;
+            letter-spacing: 0.18em;
+            margin-bottom: 15px;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header::before,
+        .section-header::after {
+            content: '';
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--divider-color), transparent);
+            flex: 1;
+        }
+
+        .section-header::before {
+            background: linear-gradient(90deg, transparent, var(--divider-color));
+            max-width: 40px;
+        }
+
+        .section-header::after {
+            background: linear-gradient(90deg, var(--divider-color), transparent);
+        }
+
+        .task-row {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            gap: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        }
+
+        .task-row:last-child {
+            border-bottom: none;
+        }
+
+        .task-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            letter-spacing: 0.04em;
+            font-style: italic;
+        }
+
+        .hearts-container {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 6px;
+        }
+
+        .heart {
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart svg {
+            width: 100%;
+            height: 100%;
+            fill: transparent;
+            stroke: var(--heart-empty);
+            stroke-width: 1.2;
+            transition: all 0.3s ease;
+        }
+
+        .heart:hover svg {
+            stroke: var(--gold);
+            transform: scale(1.15);
+        }
+
+        .heart:active svg {
+            transform: scale(0.9);
+        }
+
+        .heart.filled svg {
+            fill: var(--gold);
+            stroke: var(--gold);
+            filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.5));
+        }
+
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.35); }
+            60% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        .heart.pop svg {
+            animation: heartPop 0.35s ease;
+        }
+
+        .day-number {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.5rem;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: var(--gold);
+            pointer-events: none;
+        }
+
+        .heart:hover .day-number {
+            opacity: 0.6;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--divider-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            gap: 20px;
+        }
+
+        .footer::before {
+            content: '✦';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-color);
+            padding: 0 15px;
+            color: var(--gold);
+            font-size: 10px;
+            opacity: 0.4;
+        }
+
+        .quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            line-height: 1.9;
+            opacity: 0.5;
+            font-style: italic;
+            max-width: 380px;
+            letter-spacing: 0.02em;
+        }
+
+        .stats {
+            text-align: right;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+            padding: 20px 28px;
+            border: 1px solid var(--divider-color);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            pointer-events: none;
+        }
+
+        .stats-label {
+            font-family: 'Playfair Display SC', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            margin-bottom: 6px;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        .stats-value {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: 2.2rem;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+        }
+
+        .reset-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-color);
+            border: 1px solid var(--divider-color);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            opacity: 0.4;
+            z-index: 100;
+        }
+
+        .reset-btn:hover {
+            opacity: 1;
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ========== MOBILE STYLES (iPhone) ========== */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 30px 24px;
+                padding-top: calc(50px + var(--safe-top));
+                padding-bottom: calc(100px + var(--safe-bottom));
+            }
+
+            .corner-ornament {
+                display: none;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+            }
+
+            .header::after {
+                font-size: 12px;
+                bottom: -10px;
+            }
+
+            .header-right {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                align-items: center;
+            }
+
+            .crest {
+                font-size: 1.5rem;
+                order: 2;
+            }
+
+            .est {
+                font-size: 0.7rem;
+                order: 1;
+            }
+
+            .subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 0.2em;
+            }
+
+            .main-title {
+                font-size: 2.8rem;
+                letter-spacing: 0.1em;
+            }
+
+            .date-display {
+                font-size: 0.85rem;
+            }
+
+            .section {
+                padding: 12px 0;
+            }
+
+            .section-header {
+                font-size: 0.85rem;
+                letter-spacing: 0.12em;
+                margin-bottom: 12px;
+            }
+
+            .task-row {
+                padding: 10px 0;
+                gap: 8px;
+            }
+
+            .task-label {
+                font-size: 1.05rem;
+            }
+
+            .hearts-container {
+                grid-template-columns: repeat(10, 1fr);
+                gap: 5px;
+            }
+
+            .heart svg {
+                stroke-width: 1.4;
+            }
+
+            .day-number {
+                display: none;
+            }
+
+            .footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 25px;
+                margin-top: 30px;
+                padding-top: 25px;
+            }
+
+            .quote {
+                font-size: 0.8rem;
+                line-height: 1.8;
+                text-align: center;
+                max-width: 100%;
+            }
+
+            .stats {
+                text-align: center;
+                padding: 18px 24px;
+            }
+
+            .stats-label {
+                font-size: 0.65rem;
+            }
+
+            .stats-value {
+                font-size: 2rem;
+            }
+
+            .reset-btn {
+                bottom: calc(20px + var(--safe-bottom));
+                right: 20px;
+                left: 20px;
+                text-align: center;
+                padding: 14px 20px;
+                font-size: 0.85rem;
+                opacity: 0.6;
+            }
+        }
+
+        /* ========== SMALL PHONES ========== */
+        @media (max-width: 390px) {
+            .page-wrapper {
+                padding: 24px 18px;
+                padding-top: calc(40px + var(--safe-top));
+            }
+
+            .main-title {
+                font-size: 2.2rem;
+            }
+
+            .hearts-container {
+                grid-template-columns: repeat(10, 1fr);
+                gap: 4px;
+            }
+
+            .task-label {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* ========== LARGE DESKTOP (MacBook Pro 16") ========== */
+        @media (min-width: 1400px) {
+            .page-wrapper {
+                padding: 80px 120px;
+                max-width: 1600px;
+                margin: 0 auto;
+            }
+
+            .main-title {
+                font-size: 5.5rem;
+            }
+
+            .hearts-container {
+                grid-template-columns: repeat(30, 1fr);
+                gap: 8px;
+            }
+
+            .heart svg {
+                filter: drop-shadow(0 0 1px rgba(212, 175, 55, 0.2));
+            }
+
+            .task-row {
+                flex-direction: row;
+                align-items: center;
+                gap: 40px;
+            }
+
+            .task-label {
+                min-width: 200px;
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--divider-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold);
+        }
+
+        /* Install prompt for PWA */
+        .install-prompt {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            background: var(--bg-dark);
+            border: 1px solid var(--gold);
+            padding: 16px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .install-prompt.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .install-prompt p {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+
+        .install-prompt button {
+            background: var(--gold);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 24px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .install-prompt .dismiss {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--divider-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
+
+    <div class="page-wrapper">
+        <div class="header">
+            <div class="title-section">
+                <span class="subtitle">30 днів трансформації</span>
+                <h1 class="main-title">МАРАФОН</h1>
+                <span class="date-display" id="currentDate"></span>
+            </div>
+            <div class="header-right">
+                <div class="crest">♕</div>
+                <div class="est">EST. MMXXVI</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="section">
+                <h2 class="section-header">Домашній Догляд</h2>
+                <div class="task-row">
+                    <span class="task-label">масаж</span>
+                    <div class="hearts-container" data-task="massage"></div>
+                </div>
+                <div class="task-row">
+                    <span class="task-label">скрабінг</span>
+                    <div class="hearts-container" data-task="scrub"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-header">Активність</h2>
+                <div class="task-row">
+                    <span class="task-label">тренування</span>
+                    <div class="hearts-container" data-task="training"></div>
+                </div>
+                <div class="task-row">
+                    <span class="task-label">10 000 кроків</span>
+                    <div class="hearts-container" data-task="steps"></div>
+                </div>
+                <div class="task-row">
+                    <span class="task-label">планка</span>
+                    <div class="hearts-container" data-task="plank"></div>
+                </div>
+                <div class="task-row">
+                    <span class="task-label">м'язи тазового дня</span>
+                    <div class="hearts-container" data-task="pelvic"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-header">Турбота Про Себе</h2>
+                <div class="task-row">
+                    <span class="task-label">тепла вода</span>
+                    <div class="hearts-container" data-task="water"></div>
+                </div>
+                <div class="task-row">
+                    <span class="task-label">афірмація</span>
+                    <div class="hearts-container" data-task="affirmation"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="quote">
+                ти можеш і завжди могла<br>
+                твоя ціна — ніколи не — можливо<br>
+                ти Божа донька, а для тебе немає нічого неможливо,<br>
+                бо твій Бог в тобі сильніший за весь цей світ
+            </div>
+            <div class="stats">
+                <div class="stats-label">Загальний Прогрес</div>
+                <div class="stats-value" id="totalProgress">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">скинути прогрес</button>
+
+    <script>
+        const DAYS = 30;
+        const TASKS = ['massage', 'scrub', 'training', 'steps', 'plank', 'pelvic', 'water', 'affirmation'];
+        
+        const heartSVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>`;
+
+        function init() {
+            setDate();
+            
+            document.querySelectorAll('.hearts-container').forEach(container => {
+                const task = container.dataset.task;
+                for (let i = 1; i <= DAYS; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.dataset.day = i;
+                    heart.innerHTML = heartSVG + `<span class="day-number">${i}</span>`;
+                    heart.onclick = (e) => {
+                        e.preventDefault();
+                        toggleHeart(task, i, heart);
+                    };
+                    container.appendChild(heart);
+                }
+            });
+            
+            loadData();
+            updateProgress();
+        }
+
+        function setDate() {
+            const months = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 
+                           'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+            const now = new Date();
+            document.getElementById('currentDate').textContent = 
+                `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} року`;
+        }
+
+        function toggleHeart(task, day, element) {
+            element.classList.toggle('filled');
+            element.classList.add('pop');
+            setTimeout(() => element.classList.remove('pop'), 350);
+            
+            // Haptic feedback for mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+            
+            saveData();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let total = 0;
+            let filled = 0;
+            
+            document.querySelectorAll('.heart').forEach(heart => {
+                total++;
+                if (heart.classList.contains('filled')) filled++;
+            });
+            
+            const percentage = Math.round((filled / total) * 100);
+            document.getElementById('totalProgress').textContent = `${percentage}%`;
+        }
+
+        function saveData() {
+            const data = {};
+            
+            TASKS.forEach(task => {
+                data[task] = [];
+                document.querySelectorAll(`[data-task="${task}"] .heart`).forEach(heart => {
+                    if (heart.classList.contains('filled')) {
+                        data[task].push(parseInt(heart.dataset.day));
+                    }
+                });
+            });
+            
+            localStorage.setItem('marathon30', JSON.stringify(data));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('marathon30');
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                TASKS.forEach(task => {
+                    if (data[task]) {
+                        data[task].forEach(day => {
+                            const heart = document.querySelector(`[data-task="${task}"] .heart[data-day="${day}"]`);
+                            if (heart) heart.classList.add('filled');
+                        });
+                    }
+                });
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Ви впевнені, що хочете скинути весь прогрес?')) {
+                localStorage.removeItem('marathon30');
+                document.querySelectorAll('.heart').forEach(h => h.classList.remove('filled'));
+                updateProgress();
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
